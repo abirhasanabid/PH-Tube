@@ -6,23 +6,17 @@ const loadCatagory = () => {
         .catch(err => console.error(err))
 }
 
-
-// category
-// : 
-// "Music"
-// category_id
-// : 
-// "1001"
+// display category
 const displayCatagory = (catagories) => {
     const btnDiv= document.getElementById('btnDiv');
-    btnDiv.classList='gap-3 flex justify-center py-5'
     catagories.forEach(item => {
-        const btn = document.createElement('button')
+        const btn = document.createElement('button');
         btn.classList = 'btn';
-        btn.innerText = item.category
+        btn.innerText = item.category;
         btnDiv.append(btn);
 
     })
 }
 
 loadCatagory()
+
