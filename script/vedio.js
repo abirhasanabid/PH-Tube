@@ -50,10 +50,24 @@ const displayCatagory = (catagories) => {
 const displayVedioCatagory = (data) => {
     const vediosContainer = document.getElementById('vediosContainer');
     vediosContainer.innerHTML = '';
+    if (data.length == 0) {
+        vediosContainer.classList.remove("grid");
+        vediosContainer.innerHTML = `
+        <div class="w-full flex flex-col justify-center items-center mt-4">
+            <img class="w-[200px]" src="./assets/Icon.png" alt="">
+            <h1 class="font-bold text-3xl text-gray-900 max-w-md text-center mt-3">
+            Oops!! Sorry, There is no content here</h1>
+        </div>
+        `;
+        return;
+    }
+    else {
+        vediosContainer.classList.add("grid")
+    }
     data.forEach(item => {
-        console.log(item);
-
+        // console.log(item);
         const card = document.createElement('card');
+
         card.classList = 'card card-compact';
         card.innerHTML =
             `
