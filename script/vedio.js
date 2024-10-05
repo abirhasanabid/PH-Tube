@@ -23,10 +23,23 @@ function fidnTime(time) {
 }
 
 // click btn and find vedios
+
+const removeClass=()=>{
+    const stylesBtn = document.getElementsByClassName('find-Btn');
+    for (const element of stylesBtn) {
+        element.classList.remove('colrBtn')
+    }
+}
+
 const loadVideos = (id) => {
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
         .then(res => res.json())
-        .then(data => displayVedioCatagory(data.category))
+        .then(data => {
+            removeClass()
+            const stylesBtn = document.getElementById(`styles-btn-${id}`);
+            stylesBtn.classList.add('colrBtn')
+            displayVedioCatagory(data.category)
+        })
         .catch(err => console.error(err))
 }
 
@@ -37,16 +50,16 @@ const displayCatagory = (catagories) => {
     catagories.forEach(item => {
         const btnContainer = document.createElement('div');
         btnContainer.innerHTML = `
-        <button onclick="loadVideos(${item.category_id})" class="btn">
+        <button id="styles-btn-${item.category_id}" onclick="loadVideos(${item.category_id})" class="btn find-Btn">
         ${item.category}
         </button>
         `
         btnDiv.append(btnContainer);
 
     })
-}
+};
 
-// display VedionCategory
+// display VedionCategory and making card
 const displayVedioCatagory = (data) => {
     const vediosContainer = document.getElementById('vediosContainer');
     vediosContainer.innerHTML = '';
