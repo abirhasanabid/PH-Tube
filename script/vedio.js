@@ -24,7 +24,7 @@ function fidnTime(time) {
 
 // click btn and find vedios
 
-const removeClass=()=>{
+const removeClass = () => {
     const stylesBtn = document.getElementsByClassName('find-Btn');
     for (const element of stylesBtn) {
         element.classList.remove('colrBtn')
@@ -43,7 +43,6 @@ const loadVideos = (id) => {
         .catch(err => console.error(err))
 }
 
-
 // display btnCategory
 const displayCatagory = (catagories) => {
     const btnDiv = document.getElementById('btnDiv');
@@ -59,8 +58,26 @@ const displayCatagory = (catagories) => {
     })
 };
 
+// delatis btn
+const detailsBtn = async (id) => {
+    const res = await fetch(`https://openapi.programming-hero.com/api/phero-tube/video/${id}`);
+    const data = await res.json();
+    vedioDetails(data.video);
+};
+const vedioDetails = (details)=>{
+    // console.log(details);
+    
+   const modalContent = document.getElementById('modal-content');
+   modalContent.innerHTML=`
+   <img src="${details.thumbnail}"/>
+   `;
+   document.getElementById('modal-click').click()
+}
+
 // display VedionCategory and making card
 const displayVedioCatagory = (data) => {
+    // console.log(data);
+
     const vediosContainer = document.getElementById('vediosContainer');
     vediosContainer.innerHTML = '';
     if (data.length == 0) {
@@ -80,7 +97,6 @@ const displayVedioCatagory = (data) => {
     data.forEach(item => {
         // console.log(item);
         const card = document.createElement('card');
-
         card.classList = 'card card-compact';
         card.innerHTML =
             `
@@ -89,9 +105,8 @@ const displayVedioCatagory = (data) => {
             src=${item.thumbnail}
             alt="Shoes"/>
             ${item.others.posted_date?.length == 0 ? '' : `<span class="absolute right-2 bottom-2 bg-gray-950 text-white p-1 rounded-lg"> ${fidnTime(item.others.posted_date)}</span>`}
-           
        </figure>
-  <div class="py-2">
+  <div class="py-2 flex justify-between">
     <div class="flex gap-2">
        <div>
          <img class="w-10 h-10 rounded-full object-cover" src="${item.authors[0].profile_picture}" alt="">
@@ -101,12 +116,13 @@ const displayVedioCatagory = (data) => {
             <div class="flex items-center gap-2">
             <p class="text-gray-500">${item.authors[0].profile_name}</p>
             ${item.authors[0].verified ? '<img class="w-5 h-5" src="https://img.icons8.com/?size=48&id=yXOHowNYbgM5&  format=png" alt="">' : ''}
-            
           </div>
           <p class="text-gray-500">${item.others.views} views</P>
        </div>
     </div>
-    
+     <div>
+     <button onclick="detailsBtn('${item.video_id}')" class="btn btn-sm btn-error">Details</button>
+     </div>
   </div>
         `;
         vediosContainer.append(card);
